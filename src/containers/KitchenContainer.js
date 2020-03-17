@@ -1,6 +1,5 @@
 import React from 'react'
-import KitchenItem from '../components/KitchenItem.js'
-import { List } from 'semantic-ui-react'
+import ItemContainer from './ItemContainer.js'
 
 
 const KITCHEN_URL = "http://localhost:3000/kitchens/"
@@ -28,9 +27,7 @@ class KitchenContainer extends React.Component {
 						<input name="new-item" placeholder="Add an item" />
 						<button type="submit">Add</button>
 					</form>
-					<List celled verticalAlign='middle' size="massive">
-						{ this.state.kitchen.stocked_items.map(item => <KitchenItem item={item} key={item.name} />) }
-					</List>
+					<ItemContainer items={this.state.kitchen.stocked_items} />
 				</React.Fragment>
 			: null
 		)
