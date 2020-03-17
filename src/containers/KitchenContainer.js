@@ -1,5 +1,6 @@
 import React from 'react'
 import ItemContainer from './ItemContainer.js'
+import NewItemPrompt from '../components/NewItemPrompt.js'
 
 
 const KITCHEN_URL = "http://localhost:3000/kitchens/"
@@ -23,10 +24,7 @@ class KitchenContainer extends React.Component {
 						<h1>{this.state.kitchen.name}</h1>
 						<h3>{this.state.kitchen.location}</h3>
 					</div>
-					<form>
-						<input name="new-item" placeholder="Add an item" />
-						<button type="submit">Add</button>
-					</form>
+					<NewItemPrompt />
 					<ItemContainer items={this.state.kitchen.stocked_items} />
 				</React.Fragment>
 			: null
