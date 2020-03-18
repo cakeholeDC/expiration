@@ -15,20 +15,33 @@ class NewItemPrompt extends React.Component {
 		})
 	}
 
+	handleNewItemPromptAction(event){
+		event.preventDefault()
+		this.toggleNewItemFormModal()
+		event.target.reset()
+	}
+
+	toggleNewItemFormModal = () => {
+		this.setState({
+			showNewItemForm: !this.state.showNewItemForm
+		})
+	}
+
 	render(){
 		return(
 			<React.Fragment>
 				<Form 
 					onChange={(event) => this.handleNewItemPromptChange(event)}
-					onSubmit={() => console.log("clicked", this.state.search)}
+					onSubmit={(event) => this.handleNewItemPromptAction(event)}
 				>
 					<Input name="search" icon='search' placeholder='Add an item...' />
 				</Form>
-				{
-					this.state.showNewItemForm 
-						? <NewItemForm />
-						: null
-				}
+				<NewItemForm
+					search={this.state.search}
+					status={this.state.showNewItemForm}
+					handleItemPost={this.props.handleItemPost}
+					closeModal={this.toggleNewItemFormModal}
+				/>
 			</React.Fragment>
 		)
 	}
