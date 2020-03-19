@@ -1,9 +1,13 @@
 import React from 'react'
 import { Button, Image, List, Icon, Table } from 'semantic-ui-react'
+import ItemFormModal from '../components/EditItemForm.js'
 
 const ITEM_URL = "http://localhost:3000/items/"
 
 class KitchenItem extends React.Component {
+	state={
+		showEditModal: false
+	}
 
 	formatDate(input){
 		const moment = require('moment');
@@ -14,19 +18,19 @@ class KitchenItem extends React.Component {
 	getFontAwesomeIcon(type){
 		switch(type.toLowerCase()){
 			case "vegetable":
-				return <i class="fas fa-carrot" style={{fontSize: "1.5em"}}></i>
+				return <i className="fas fa-carrot" style={{fontSize: "1.5em"}}></i>
 			case "fruit":
-				return <i class="fas fa-apple-alt" style={{fontSize: "1.5em"}}></i>
+				return <i className="fas fa-apple-alt" style={{fontSize: "1.5em"}}></i>
 			case "grain":
-				return <i class="fas fa-bread-slice" style={{fontSize: "1.5em"}}></i>
+				return <i className="fas fa-bread-slice" style={{fontSize: "1.5em"}}></i>
 			case "protein":
-				return <i class="fas fa-fish" style={{fontSize: "1.5em"}}></i>
+				return <i className="fas fa-fish" style={{fontSize: "1.5em"}}></i>
 			case "dairy":
-				return <i class="fas fa-cheese" style={{fontSize: "1.5em"}}></i>
+				return <i className="fas fa-cheese" style={{fontSize: "1.5em"}}></i>
 			case "beverage":
-				return <i class="fas fa-beer" style={{fontSize: "1.5em"}}></i>
+				return <i className="fas fa-beer" style={{fontSize: "1.5em"}}></i>
 			default:
-			 return <i class="fas fa-utensils" style={{fontSize: "1.5em"}}></i>
+			 return <i className="fas fa-utensils" style={{fontSize: "1.5em"}}></i>
 		}
 
 	}
@@ -38,11 +42,21 @@ class KitchenItem extends React.Component {
 			expiration: moment(this.props.item.expiration).add(1, increment).format()
 		}
 
-		this.props.patchItem(itemObject)
+		this.props.updateItem(itemObject)
 	}
 
 	handleDelete(){
 		this.props.deleteItem(this.props.item.id)
+	}
+
+	toggleEditModal = () => {
+		this.setState({
+			showEditModal: !this.state.showEditModal
+		})
+	}
+
+	closeEditModal = () => {
+		this.toggleEditModal()
 	}
 
 	renderActionButtons(){
@@ -59,6 +73,7 @@ class KitchenItem extends React.Component {
 		      <Button
 		      	icon
 		      	alt="Edit Item"
+		      	onClick={ () => this.toggleEditModal() }
 		      >
 		        <Icon name='edit' alt="Edit Item"/>
 		      </Button>
@@ -75,18 +90,20 @@ class KitchenItem extends React.Component {
 	}
 
 	render(){
-		// console.log(this.props.item)
+		const item = this.props.item 
+		const showEditModal = this.state.showEditModal //boolean
+
 		return(
 			<List.Item>
 		      {/* <List.Content floated='left'>
-			        { this.getFontAwesomeIcon(this.props.item.category.name) }
+			        { this.getFontAwesomeIcon(item.category.name) }
 		      </List.Content>
 		      <List.Content>
 		      	<div>
-			        { `${this.props.item.name} (x${this.props.item.qty})`}
+			        { `${item.name} (x${item.qty})`}
 		        </div>
 		        <div>
-			        Expires: {this.formatDate(this.props.item.expiration)}
+			        Expires: {this.formatDate(item.expiration)}
 		        </div>
 		      </List.Content>
 		      <List.Content floated='right'>
@@ -97,16 +114,22 @@ class KitchenItem extends React.Component {
 		      	<Table basic='very' columns={5}>
 				    <Table.Body>
 				      <Table.Row>
-				      	<Table.Cell width="one" textAlign='center'>{ this.getFontAwesomeIcon(this.props.item.category.name) }</Table.Cell>
-					    <Table.Cell width="one" textAlign='right'>{this.props.item.qty}</Table.Cell>
-				        <Table.Cell width="five" textAlign='left'>{this.props.item.name}</Table.Cell>
-				        <Table.Cell width="five">Expires: {this.formatDate(this.props.item.expiration)}</Table.Cell>
+				      	<Table.Cell width="one" textAlign='center'>{ this.getFontAwesomeIcon(item.category.name) }</Table.Cell>
+					    <Table.Cell width="one" textAlign='right'>{item.qty}</Table.Cell>
+				        <Table.Cell width="five" textAlign='left'>{item.name}</Table.Cell>
+				        <Table.Cell width="five">Expires: {this.formatDate(item.expiration)}</Table.Cell>
 				        <Table.Cell width="one">
 				        	{ this.renderActionButtons() }
 				        </Table.Cell>
 				      </Table.Row>
 				    </Table.Body>
 				  </Table>
+				  <ItemFormModal
+					prefillData={ item }
+					showModal={ showEditModal }
+					closeModal={ this.closeEditModal }
+					handleFormSubmit={ () => console.log("form submit")}
+				/>
 		      </List.Content> }
 		    </List.Item>
 			)

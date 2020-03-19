@@ -38,9 +38,9 @@ class NewItemPrompt extends React.Component {
 				</Form>
 				<NewItemForm
 					search={this.state.search}
-					status={this.state.showNewItemForm}
-					handleItemPost={this.props.handleItemPost}
+					showModal={this.state.showNewItemForm}
 					closeModal={this.toggleNewItemFormModal}
+					handleFormSubmit={this.props.handleItemPost}
 				/>
 			</React.Fragment>
 		)

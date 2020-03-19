@@ -18,12 +18,12 @@ class KitchenContainer extends React.Component {
 			}))
 	}
 
-	handleItemPost = (item) => {
+	createNewItem = (item) => {
 		const postObj = {
 			...item
 		}
 
-		const newItemConfig = {
+		const postConfig = {
 			method: "POST",
 			headers: {
 				'Content-Type': "application/json",
@@ -31,9 +31,8 @@ class KitchenContainer extends React.Component {
 			},
 			body: JSON.stringify(postObj)
 		}
-		// this.sendItemToAPI(newItemConfig)
 		
-		fetch(ITEM_URL, newItemConfig)
+		fetch(ITEM_URL, postConfig)
 			.then(res => res.json())
 			.then(item => {
 				console.log(item)
@@ -47,21 +46,17 @@ class KitchenContainer extends React.Component {
 		})
 	}
 
-	handleItemPatch = (item) => {
-		const updateObj = {
-			expiration: item.expiration
-		}
-
-		const updateItemConfig = {
+	updateItem = (item) => {
+		const patchConfig = {
 			method: "PATCH",
 			headers: {
 				'Content-Type': "application/json",
 				"Accept" : "application/json"
 			},
-			body: JSON.stringify(updateObj)
+			body: JSON.stringify(item)
 		}
-		// this.sendItemToAPI(updateItemConfig, item.id)
-		fetch(`${ITEM_URL}/${item.id}`, updateItemConfig)
+
+		fetch(`${ITEM_URL}/${item.id}`, patchConfig)
 			.then(res => res.json())
 			.then(item => this.setState({
 				kitchen: {
@@ -71,16 +66,15 @@ class KitchenContainer extends React.Component {
 			}))
 	}
 
-	handleItemDelete = (id) => {
-		const deleteItemConfig = {
+	deleteItem = (id) => {
+		const deleteConfig = {
 			method: "DELETE",
 			headers: {
 				'Content-Type': "application/json",
 				"Accept" : "application/json"
 			}
 		}
-		// this.sendItemToAPI(deleteItemConfig, id)
-		fetch(`${ITEM_URL}/${id}`, deleteItemConfig)
+		fetch(`${ITEM_URL}/${id}`, deleteConfig)
 			.then(res => res.json())
 			.then(jsonData => this.setState({
 				kitchen: {
@@ -112,11 +106,11 @@ class KitchenContainer extends React.Component {
 						<h3>{this.state.kitchen.location}</h3>
 					</div>
 					<NewItemPrompt 
-						handleItemPost={this.handleItemPost}/>
+						handleSearchSubmit={this.createNewItem}/>
 					<ItemContainer 
 						items={ sortedItems }
-						handleItemPatch={ this.handleItemPatch }
-						handleItemDelete={ this.handleItemDelete }
+						updateItem={ this.updateItem }
+						deleteItem={ this.deleteItem }
 					/>
 				</React.Fragment>
 			: null

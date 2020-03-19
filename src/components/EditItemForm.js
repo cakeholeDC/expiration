@@ -5,11 +5,11 @@ const CATEGORY_URL = "http://localhost:3000/categories/"
 const LOCATIONS_URL = "http://localhost:3000/locations/"
 
 
-class NewItemForm extends React.Component {
+class EditItemForm extends React.Component {
 	state={
 		categories: null,
 		locations: null,
-		item: "",
+		name: "",
 		qty: "",
 		purchased: "",
 		expiration: "",
@@ -23,11 +23,21 @@ class NewItemForm extends React.Component {
 
 		fetch(`${CATEGORY_URL}`)
 			.then(res => res.json())
-			.then(catData => this.setState({
-				categories: catData,
-				purchased: moment().format("YYYY-MM-DD"),
-				expiration: moment().add(1, 'month').format("YYYY-MM-DD")
-			}))
+			.then(catData => {
+				//if prefillData exists save to state
+				if (this.props.prefillData) {
+					this.setState({
+						categories: catData,
+						...this.props.prefillData,
+						location_id: this.props.prefillData.location.id,
+						category_id: this.props.prefillData.category.id
+					})
+				} else {
+					this.setState({
+						categories: catData,
+					})
+				}
+		})
 
 		fetch(`${LOCATIONS_URL}`)
 			.then(res => res.json())
@@ -36,18 +46,18 @@ class NewItemForm extends React.Component {
 			}))
 	}
 
-	handleNewItemFormChange(event){
+	handleEditItemFormChange(event){
 		this.setState({
 			[event.target.name]: event.target.value
 		})
 	}
 
-	handleNewItemFormSubmit(event){
+	handleEditItemFormSubmit(event){
 		const moment = require('moment')
 		event.preventDefault()
 
 		const formData = {
-			name: this.state.item ? this.state.item : this.props.search,
+			name: this.state.name ? this.state.name : this.props.search,
 			qty: this.state.qty,
 			purchased: moment(this.state.purchased).format(),
 			expiration: moment(this.state.expiration).format(),
@@ -68,8 +78,8 @@ class NewItemForm extends React.Component {
 		
 		return(
 			<Modal
-			    open={ this.props.status }
-			    onClose={ this.props.close }
+			    open={ this.props.showModal }
+			    onClose={ this.props.closeModal }
 			    closeOnDimmerClick
 			    closeOnEscape
 			    closeIcon
@@ -78,20 +88,21 @@ class NewItemForm extends React.Component {
 			    <Modal.Content>
 			    	<Modal.Description style={{width: "100%"}}>
 						<Form 
-					    	onChange={(event) => this.handleNewItemFormChange(event)}
-					    	onSubmit={ event => this.handleNewItemFormSubmit(event) }
+					    	onChange={(event) => this.handleEditItemFormChange(event)}
+					    	onSubmit={ event => this.handleEditItemFormSubmit(event) }
 				    	>
 				    		<Form.Group widths="equal">
 					    		<Form.Input 
 					    			type="text"
 					    			name="item" 
 					    			label="Item"
-					    			value={this.props.search} 
+					    			value={this.props.search ? this.props.search : this.state.name} 
 					    			placeholder="Bagels"/>
 					    		<Form.Input 
 					    			type="text" 
 					    			name="qty"
 					    			label='Quantity (ex. "3oz" or "1 jar")'
+					    			value={this.state.qty} 
 					    			placeholder="1 package"/>
 				    		</Form.Group>
 				    		<div className="field">
@@ -101,8 +112,8 @@ class NewItemForm extends React.Component {
 					    			name="category"
 					    			placeholder="Select a Category..."
 					    			value = {this.state.category_id }
-				    			>
-					    			<option value="" disabled>Select a Category...</option>
+					    		>
+					    			<option value='' disabled>Select a Category...</option>
 					    			{ categoryOptions }
 					    		</select>
 				    		</div>
@@ -114,7 +125,7 @@ class NewItemForm extends React.Component {
 					    			placeholder="Select a Category..."
 					    			value = {this.state.location_id }
 				    			>
-					    			<option value="" disabled>Select a Location...</option>
+					    			<option value='' disabled >Select a Location...</option>
 					    			{ locationOptions }
 					    		</select>
 				    		</div>
@@ -123,18 +134,20 @@ class NewItemForm extends React.Component {
 					    			type="date" 
 					    			name="purchased" 
 					    			label="Purchased On"
-					    			value={ this.state.purchased }/>
+					    			value={ moment(this.state.purchased).format("YYYY-MM-DD") }/>
 					    		<Form.Input 
 					    			type="date" 
 					    			name="expiration" 
 					    			label="Expiration"
-					    			value={ this.state.expiration }/>
+					    			value={ moment(this.state.expiration).format("YYYY-MM-DD") }/>
 					    	</Form.Group>
 				    		<Form.TextArea 
 				    			type="text" 
 				    			name="notes" 
 				    			label="Notes:" 
-				    			placeholder="Planning to use for Short Rib Chili on MM/DD/YYYY"/>
+				    			placeholder="Planning to use for Short Rib Chili on MM/DD/YYYY"
+				    			value={this.state.notes}
+				    		/>
 				    		<Button floated="right" type='submit'>Add Item</Button>
 				    	</Form>
 					</Modal.Description>
@@ -144,4 +157,4 @@ class NewItemForm extends React.Component {
 	}
 }
 
-export default NewItemForm
+export default EditItemForm
