@@ -1,5 +1,5 @@
 import React from 'react'
-import NewItemForm from '../components/NewItemForm.js'
+import ItemFormModal from '../components/ItemFormModal.js'
 import { Form, Input } from 'semantic-ui-react'
 
 
@@ -17,17 +17,23 @@ class NewItemPrompt extends React.Component {
 
 	handleNewItemPromptAction(event){
 		event.preventDefault()
-		this.toggleNewItemFormModal()
+		this.toggleNewItemModal()
 		event.target.reset()
 	}
 
-	toggleNewItemFormModal = () => {
+	toggleNewItemModal = () => {
 		this.setState({
 			showNewItemForm: !this.state.showNewItemForm
 		})
 	}
 
+	closeModal = () => {
+		this.toggleNewItemModal()
+	}
+
 	render(){
+		const newItemName = this.state.search
+		const showNewItemModal = this.state.showNewItemForm
 		return(
 			<React.Fragment>
 				<Form 
@@ -36,11 +42,11 @@ class NewItemPrompt extends React.Component {
 				>
 					<Input name="search" icon='search' placeholder='Add an item...' />
 				</Form>
-				<NewItemForm
-					search={this.state.search}
-					showModal={this.state.showNewItemForm}
-					closeModal={this.toggleNewItemFormModal}
-					handleFormSubmit={this.props.handleItemPost}
+				<ItemFormModal
+					search={ newItemName }
+					showModal={ showNewItemModal }
+					closeModal={ this.closeModal }
+					submitForm={ this.props.createItem }
 				/>
 			</React.Fragment>
 		)

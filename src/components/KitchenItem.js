@@ -1,17 +1,18 @@
 import React from 'react'
 import { Button, Image, List, Icon, Table } from 'semantic-ui-react'
-import ItemFormModal from '../components/EditItemForm.js'
+import ItemFormModal from '../components/ItemFormModal.js'
+import AdvanceModal from '../components/AdvanceModal.js'
 
 const ITEM_URL = "http://localhost:3000/items/"
 
 class KitchenItem extends React.Component {
 	state={
-		showEditModal: false
+		showEditModal: false,
+		showAdvanceModal: false
 	}
 
 	formatDate(input){
 		const moment = require('moment');
-
 		return moment(input).format("MMM DD, YYYY")
 	}
 
@@ -35,8 +36,29 @@ class KitchenItem extends React.Component {
 
 	}
 
+	// showAdvanceModal(){
+	// 	this.toggleAdvanceModal()
+	// }
+
+	toggleAdvanceModal = () => {
+		this.setState({
+			showAdvanceModal: !this.state.showAdvanceModal
+		})
+	}
+
+	toggleEditModal = () => {
+		this.setState({
+			showEditModal: !this.state.showEditModal
+		})
+	}
+	
+	handleDelete(){
+		this.props.deleteItem(this.props.item.id)
+	}
+
 	handleAdvanceDate(increment="day"){
 		const moment = require('moment');
+		debugger
 		const itemObject = {
 			id: this.props.item.id,
 			expiration: moment(this.props.item.expiration).add(1, increment).format()
@@ -45,19 +67,7 @@ class KitchenItem extends React.Component {
 		this.props.updateItem(itemObject)
 	}
 
-	handleDelete(){
-		this.props.deleteItem(this.props.item.id)
-	}
 
-	toggleEditModal = () => {
-		this.setState({
-			showEditModal: !this.state.showEditModal
-		})
-	}
-
-	closeEditModal = () => {
-		this.toggleEditModal()
-	}
 
 	renderActionButtons(){
 		return (
@@ -80,7 +90,7 @@ class KitchenItem extends React.Component {
 		      <Button 
 		      	icon
 		      	positive
-		      	onClick={ () => this.handleAdvanceDate() }
+		      	onClick={ () => this.toggleAdvanceModal() /*this.handleAdvanceDate()*/ }
 		      	alt="Advance Date"
 		      >
 		        <Icon name='redo' alt="Advance Date"/>
@@ -92,6 +102,9 @@ class KitchenItem extends React.Component {
 	render(){
 		const item = this.props.item 
 		const showEditModal = this.state.showEditModal //boolean
+		// const closeEditModal = this.toggleEditModal()
+		const showAdvanceModal = this.state.showAdvanceModal //boolean
+		// const closeAdvanceModal = this.toggleAdvanceModal()
 
 		return(
 			<List.Item>
@@ -124,11 +137,16 @@ class KitchenItem extends React.Component {
 				      </Table.Row>
 				    </Table.Body>
 				  </Table>
+				  <AdvanceModal 
+				  	showModal={ showAdvanceModal }
+					closeModal={ this.props.closeAdvanceModal }
+					advanceDate={ this.handleAdvanceDate }
+				  />
 				  <ItemFormModal
 					prefillData={ item }
 					showModal={ showEditModal }
-					closeModal={ this.closeEditModal }
-					handleFormSubmit={ () => console.log("form submit")}
+					closeModal={ this.props.closeEditModal }
+					submitForm={ this.props.updateItem }
 				/>
 		      </List.Content> }
 		    </List.Item>

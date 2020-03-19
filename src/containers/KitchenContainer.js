@@ -85,14 +85,6 @@ class KitchenContainer extends React.Component {
 			)
 	}
 
-	// sendItemToAPI(config, id=null){
-	// 	fetch(`${ITEM_URL}/${id}`, config)
-	// 		.then(res => res.json())
-	// 		.then(kitchenData => this.setState({
-	// 			kitchen: kitchenData
-	// 		}))
-	// }
-
 	render(){
 		const sortedItems = this.state.kitchen
 			? [...this.state.kitchen.stocked_items.sort((a, b) => a.expiration > b.expiration ? 1 : -1)].sort((a,b) => a.name < b.name ? 1 : -1)
@@ -106,7 +98,7 @@ class KitchenContainer extends React.Component {
 						<h3>{this.state.kitchen.location}</h3>
 					</div>
 					<NewItemPrompt 
-						handleSearchSubmit={this.createNewItem}/>
+						createItem={this.createNewItem}/>
 					<ItemContainer 
 						items={ sortedItems }
 						updateItem={ this.updateItem }
