@@ -9,22 +9,26 @@ class KitchenItem extends React.Component {
 		showAdvanceModal: false
 	}
 
-	getFontAwesomeIcon(type){
-		switch(type.toLowerCase()){
-			case "vegetable":
-				return <i className="fas fa-carrot" style={{fontSize: "1.5em"}}></i>
-			case "fruit":
-				return <i className="fas fa-apple-alt" style={{fontSize: "1.5em"}}></i>
-			case "grain":
-				return <i className="fas fa-bread-slice" style={{fontSize: "1.5em"}}></i>
-			case "protein":
-				return <i className="fas fa-fish" style={{fontSize: "1.5em"}}></i>
-			case "dairy":
-				return <i className="fas fa-cheese" style={{fontSize: "1.5em"}}></i>
-			case "beverage":
-				return <i className="fas fa-beer" style={{fontSize: "1.5em"}}></i>
-			default:
-			 return <i className="fas fa-utensils" style={{fontSize: "1.5em"}}></i>
+	getFontAwesomeIcon(item){
+		if (!item) {
+			debugger
+		} else {
+			switch(item.category.name.toLowerCase()){
+				case "vegetable":
+					return <i className="fas fa-carrot" style={{fontSize: "1.5em"}}></i>
+				case "fruit":
+					return <i className="fas fa-apple-alt" style={{fontSize: "1.5em"}}></i>
+				case "grain":
+					return <i className="fas fa-bread-slice" style={{fontSize: "1.5em"}}></i>
+				case "protein":
+					return <i className="fas fa-fish" style={{fontSize: "1.5em"}}></i>
+				case "dairy":
+					return <i className="fas fa-cheese" style={{fontSize: "1.5em"}}></i>
+				case "beverage":
+					return <i className="fas fa-beer" style={{fontSize: "1.5em"}}></i>
+				default:
+				 return <i className="fas fa-utensils" style={{fontSize: "1.5em"}}></i>
+			}
 		}
 
 	}
@@ -105,29 +109,42 @@ class KitchenItem extends React.Component {
 		const item = this.props.item 
 		const showEditModal = this.state.showEditModal //boolean
 		const showAdvanceModal = this.state.showAdvanceModal //boolean
-
+		console.log('kitchenItem', item)
 		return(
 			<List.Item>
-		      {/* <List.Content floated='left'>
-			        { this.getFontAwesomeIcon(item.category.name) }
-		      </List.Content>
-		      <List.Content>
-		      	<div>
-			        { `${item.name} (x${item.qty})`}
-		        </div>
-		        <div>
-			        Expires: {this.displayExpiration(item.expiration)}
-		        </div>
-		      </List.Content>
-		      <List.Content floated='right'>
-		        { this.renderActionButtons() }
-		      </List.Content> */}
+		      { /*<React.Fragment>
+			      <List.Content floated='left'>
+				        { this.getFontAwesomeIcon(item) }
+			      </List.Content>
+			      <List.Content>
+			      	<div>
+				        { `${item.name} (x${item.qty})`}
+			        </div>
+			        <div>
+				        Expires: {this.displayExpiration(item.expiration)}
+			        </div>
+			      </List.Content>
+			      <List.Content floated='right'>
+			        { this.renderActionButtons() }
+			        <AdvanceModal 
+					  	showModal={ showAdvanceModal }
+						closeModal={ this.toggleAdvanceModal }
+						advanceDate={ this.handleAdvanceDate }
+					  />
+					  <ItemFormModal
+						prefillData={ item }
+						showModal={ showEditModal }
+						closeModal={ this.toggleEditModal }
+						submitForm={ this.props.updateItem }
+					/>
+			      </List.Content>
+		      </React.Fragment> */}
 		      
 		      { <List.Content>
 		      	<Table basic='very' columns={5}>
 				    <Table.Body>
 				      <Table.Row>
-				      	<Table.Cell width="one" textAlign='center'>{ this.getFontAwesomeIcon(item.category.name) }</Table.Cell>
+				      	<Table.Cell width="one" textAlign='center'>{ this.getFontAwesomeIcon(item) }</Table.Cell>
 					    <Table.Cell width="one" textAlign='right'>{item.qty}</Table.Cell>
 				        <Table.Cell width="five" textAlign='left'>{item.name}</Table.Cell>
 				        <Table.Cell width="five">{this.displayExpiration(item.expiration)}</Table.Cell>

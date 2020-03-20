@@ -27,10 +27,6 @@ class NewItemPrompt extends React.Component {
 		})
 	}
 
-	closeModal = () => {
-		this.toggleNewItemModal()
-	}
-
 	render(){
 		const newItemName = this.state.search
 		const showNewItemModal = this.state.showNewItemForm
@@ -45,7 +41,7 @@ class NewItemPrompt extends React.Component {
 				<ItemFormModal
 					search={ newItemName }
 					showModal={ showNewItemModal }
-					closeModal={ this.closeModal }
+					closeModal={ this.toggleNewItemModal }
 					submitForm={ this.props.createItem }
 				/>
 			</React.Fragment>

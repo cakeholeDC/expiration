@@ -32,7 +32,6 @@ class KitchenContainer extends React.Component {
 			body: JSON.stringify(postObj)
 		}
 		
-		// debugger
 		fetch(ITEM_URL, postConfig)
 			.then(res => res.json())
 			.then(item => {
@@ -56,14 +55,17 @@ class KitchenContainer extends React.Component {
 			body: JSON.stringify(item)
 		}
 
+
 		fetch(`${ITEM_URL}/${item.id}`, patchConfig)
 			.then(res => res.json())
-			.then(item => this.setState({
-				kitchen: {
-					...this.state.kitchen,
-					stocked_items: [...this.state.kitchen.stocked_items.filter(oldItem => oldItem.id !== item.id), item ]
-				}
-			}))
+			.then(item => {
+				this.setState({
+					kitchen: {
+						...this.state.kitchen,
+						stocked_items: [...this.state.kitchen.stocked_items.filter(oldItem => oldItem.id !== item.id), item ]
+					}
+				})
+		})
 	}
 
 	deleteItem = (id) => {
@@ -85,11 +87,20 @@ class KitchenContainer extends React.Component {
 			)
 	}
 
+	sortStockedItems(items=[]){
+		return [...items].sort((a, b) => {
+			//sort by expiration
+			if (a.expiration > b.expiration) return 1;
+			if (a.expiration < b.expiration) return -1;
+			//then by name
+			if (a.name > b.name) return 1;
+			if (a.name < b.name) return -1;
+		})
+	}
+
 	render(){
-		const sortedItems = this.state.kitchen
-			? [...this.state.kitchen.stocked_items.sort((a, b) => a.expiration > b.expiration ? 1 : -1)]
-			: null
-			console.log("sortedItems", sortedItems)
+		const sortedItems = this.state.kitchen ? this.sortStockedItems(this.state.kitchen.stocked_items) : []
+
 		return(
 			this.state.kitchen ?
 				<React.Fragment>

@@ -9,6 +9,7 @@ class ItemForm extends React.Component {
 	state={
 		categories: null,
 		locations: null,
+		id: null,
 		name: "",
 		qty: "",
 		purchased: "",
@@ -29,8 +30,8 @@ class ItemForm extends React.Component {
 					this.setState({
 						categories: catData,
 						...this.props.prefillData,
-						location_id: this.props.prefillData.location_id,
-						category_id: this.props.prefillData.category_id
+						location_id: this.props.prefillData.location.id,
+						category_id: this.props.prefillData.category.id
 					})
 				} else {
 					this.setState({
@@ -59,6 +60,7 @@ class ItemForm extends React.Component {
 		const moment = require('moment')
 
 		const formData = {
+			id: this.state.id,
 			name: this.state.name ? this.state.name : this.props.search,
 			qty: this.state.qty,
 			purchased: moment(this.state.purchased).format(),
