@@ -3,6 +3,7 @@ import KitchenItem from '../components/KitchenItem.js'
 import { List } from 'semantic-ui-react'
 
 function ItemContainer(props) {
+	console.log("ItemContainer", props.items)
 	return(
 		<List celled verticalAlign='middle' size="massive">
 			{ props.items.map(item =>

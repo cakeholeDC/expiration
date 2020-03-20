@@ -11,10 +11,14 @@ function AdvanceModal(props) {
 		    closeIcon
 		    size="small"
 	    >
-			<Modal.Header>Advance Date By...?</Modal.Header>
+			<Modal.Header>
+				<Container textAlign="center">
+					Advance Expiration Date By:
+				</Container>
+			</Modal.Header>
 		    <Modal.Content>
 		    	<Modal.Description style={{width: "100%"}}>
-		    		<Container>
+		    		<Container textAlign="center">
 				      <Button
 				      size="huge"
 				      	alt="day"

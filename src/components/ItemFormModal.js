@@ -29,8 +29,8 @@ class ItemForm extends React.Component {
 					this.setState({
 						categories: catData,
 						...this.props.prefillData,
-						location_id: this.props.prefillData.location.id,
-						category_id: this.props.prefillData.category.id
+						location_id: this.props.prefillData.location_id,
+						category_id: this.props.prefillData.category_id
 					})
 				} else {
 					this.setState({
@@ -68,7 +68,6 @@ class ItemForm extends React.Component {
 			category_id: this.state.category_id
 		}
 
-		// debugger
 		this.props.submitForm(formData)
 		this.props.closeModal()
 	}
@@ -86,7 +85,7 @@ class ItemForm extends React.Component {
 			    closeOnEscape
 			    closeIcon
 		    >
-				<Modal.Header>Add an Item</Modal.Header>
+				<Modal.Header>{!this.props.prefillData ? "Add an Item" : `Updating "${this.props.prefillData.name}"`}</Modal.Header>
 			    <Modal.Content>
 			    	<Modal.Description style={{width: "100%"}}>
 						<Form 
@@ -96,9 +95,9 @@ class ItemForm extends React.Component {
 				    		<Form.Group widths="equal">
 					    		<Form.Input 
 					    			type="text"
-					    			name="item" 
+					    			name="name" 
 					    			label="Item"
-					    			value={this.props.search ? this.props.search : this.state.name} 
+					    			value={this.state.name === '' ? this.props.search : this.state.name } 
 					    			placeholder="Bagels"/>
 					    		<Form.Input 
 					    			type="text" 
@@ -111,9 +110,9 @@ class ItemForm extends React.Component {
 					    		<label>Category</label>
 					    		<select
 					    			className="ui fluid selection dropdown"
-					    			name="category"
+					    			name="category_id"
 					    			placeholder="Select a Category..."
-					    			value = {this.state.category_id }
+					    			defaultValue = { this.state.category_id }
 					    		>
 					    			<option value='' disabled>Select a Category...</option>
 					    			{ categoryOptions }
@@ -123,9 +122,9 @@ class ItemForm extends React.Component {
 					    		<label>Location</label>
 					    		<select
 					    			className="ui fluid selection dropdown"
-					    			name="location"
+					    			name="location_id"
 					    			placeholder="Select a Category..."
-					    			value = {this.state.location_id }
+					    			defaultValue = {this.state.location_id }
 				    			>
 					    			<option value='' disabled >Select a Location...</option>
 					    			{ locationOptions }
@@ -150,7 +149,7 @@ class ItemForm extends React.Component {
 				    			placeholder="Planning to use for Short Rib Chili on MM/DD/YYYY"
 				    			value={this.state.notes}
 				    		/>
-				    		<Button floated="right" type='submit'>Add Item</Button>
+				    		<Button floated="right" type='submit'>{ !this.props.prefillData ? "Add Item" : "Update Item"}</Button>
 				    	</Form>
 					</Modal.Description>
 				</Modal.Content>

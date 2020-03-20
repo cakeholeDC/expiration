@@ -3,17 +3,10 @@ import { Button, Image, List, Icon, Table } from 'semantic-ui-react'
 import ItemFormModal from '../components/ItemFormModal.js'
 import AdvanceModal from '../components/AdvanceModal.js'
 
-const ITEM_URL = "http://localhost:3000/items/"
-
 class KitchenItem extends React.Component {
 	state={
 		showEditModal: false,
 		showAdvanceModal: false
-	}
-
-	formatDate(input){
-		const moment = require('moment');
-		return moment(input).format("MMM DD, YYYY")
 	}
 
 	getFontAwesomeIcon(type){
@@ -36,38 +29,20 @@ class KitchenItem extends React.Component {
 
 	}
 
-	// showAdvanceModal(){
-	// 	this.toggleAdvanceModal()
-	// }
-
-	toggleAdvanceModal = () => {
-		this.setState({
-			showAdvanceModal: !this.state.showAdvanceModal
-		})
-	}
-
-	toggleEditModal = () => {
-		this.setState({
-			showEditModal: !this.state.showEditModal
-		})
-	}
-	
-	handleDelete(){
-		this.props.deleteItem(this.props.item.id)
-	}
-
-	handleAdvanceDate(increment="day"){
+	displayExpiration(input){
 		const moment = require('moment');
-		debugger
-		const itemObject = {
-			id: this.props.item.id,
-			expiration: moment(this.props.item.expiration).add(1, increment).format()
-		}
-
-		this.props.updateItem(itemObject)
+		const expiration = moment(input).format("MMM DD, YYYY")
+		const timeUntil = moment(expiration).fromNow()
+		const dateHasPassed = moment(expiration).isBefore(moment())
+		const isToday = moment(expiration).isSame(moment())
+		// debugger
+		return (
+			<div style={ dateHasPassed ? { color: "red" } : isToday ? { color: "orange" } : null } >
+				{dateHasPassed ? `Expired: ${timeUntil}` : `Expires: ${expiration}` } <br/>
+				<small>{ dateHasPassed ? null : timeUntil }</small>
+			</div>
+		)
 	}
-
-
 
 	renderActionButtons(){
 		return (
@@ -99,12 +74,37 @@ class KitchenItem extends React.Component {
 		)
 	}
 
+	toggleAdvanceModal = () => {
+		this.setState({
+			showAdvanceModal: !this.state.showAdvanceModal
+		})
+	}
+
+	toggleEditModal = () => {
+		this.setState({
+			showEditModal: !this.state.showEditModal
+		})
+	}
+	
+	handleDelete(){
+		this.props.deleteItem(this.props.item.id)
+	}
+
+	handleAdvanceDate = (increment="day") => {
+		const moment = require('moment');
+		const itemObject = {
+			id: this.props.item.id,
+			expiration: moment(this.props.item.expiration).add(1, increment).format()
+		}
+
+		this.props.updateItem(itemObject)
+		this.toggleAdvanceModal()
+	}
+
 	render(){
 		const item = this.props.item 
 		const showEditModal = this.state.showEditModal //boolean
-		// const closeEditModal = this.toggleEditModal()
 		const showAdvanceModal = this.state.showAdvanceModal //boolean
-		// const closeAdvanceModal = this.toggleAdvanceModal()
 
 		return(
 			<List.Item>
@@ -116,7 +116,7 @@ class KitchenItem extends React.Component {
 			        { `${item.name} (x${item.qty})`}
 		        </div>
 		        <div>
-			        Expires: {this.formatDate(item.expiration)}
+			        Expires: {this.displayExpiration(item.expiration)}
 		        </div>
 		      </List.Content>
 		      <List.Content floated='right'>
@@ -130,7 +130,7 @@ class KitchenItem extends React.Component {
 				      	<Table.Cell width="one" textAlign='center'>{ this.getFontAwesomeIcon(item.category.name) }</Table.Cell>
 					    <Table.Cell width="one" textAlign='right'>{item.qty}</Table.Cell>
 				        <Table.Cell width="five" textAlign='left'>{item.name}</Table.Cell>
-				        <Table.Cell width="five">Expires: {this.formatDate(item.expiration)}</Table.Cell>
+				        <Table.Cell width="five">{this.displayExpiration(item.expiration)}</Table.Cell>
 				        <Table.Cell width="one">
 				        	{ this.renderActionButtons() }
 				        </Table.Cell>
@@ -139,13 +139,13 @@ class KitchenItem extends React.Component {
 				  </Table>
 				  <AdvanceModal 
 				  	showModal={ showAdvanceModal }
-					closeModal={ this.props.closeAdvanceModal }
+					closeModal={ this.toggleAdvanceModal }
 					advanceDate={ this.handleAdvanceDate }
 				  />
 				  <ItemFormModal
 					prefillData={ item }
 					showModal={ showEditModal }
-					closeModal={ this.props.closeEditModal }
+					closeModal={ this.toggleEditModal }
 					submitForm={ this.props.updateItem }
 				/>
 		      </List.Content> }

@@ -32,11 +32,11 @@ class KitchenContainer extends React.Component {
 			body: JSON.stringify(postObj)
 		}
 		
+		// debugger
 		fetch(ITEM_URL, postConfig)
 			.then(res => res.json())
 			.then(item => {
 				console.log(item)
-				debugger
 				this.setState({
 					kitchen: {
 						...this.state.kitchen, 
@@ -87,9 +87,9 @@ class KitchenContainer extends React.Component {
 
 	render(){
 		const sortedItems = this.state.kitchen
-			? [...this.state.kitchen.stocked_items.sort((a, b) => a.expiration > b.expiration ? 1 : -1)].sort((a,b) => a.name < b.name ? 1 : -1)
+			? [...this.state.kitchen.stocked_items.sort((a, b) => a.expiration > b.expiration ? 1 : -1)]
 			: null
-
+			console.log("sortedItems", sortedItems)
 		return(
 			this.state.kitchen ?
 				<React.Fragment>
