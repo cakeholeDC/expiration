@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Image, List, Icon, Table } from 'semantic-ui-react'
+import { Button, List, Icon, Table } from 'semantic-ui-react'
 import ItemFormModal from '../components/ItemFormModal.js'
 import AdvanceModal from '../components/AdvanceModal.js'
 
@@ -38,12 +38,17 @@ class KitchenItem extends React.Component {
 		const expiration = moment(input).format("MMM DD, YYYY")
 		const timeUntil = moment(expiration).fromNow()
 		const dateHasPassed = moment(expiration).isBefore(moment())
-		const isToday = moment(expiration).isSame(moment())
-		// debugger
+		const isToday = moment(expiration).isSame(moment().format("MMM DD, YYYY"))
+
 		return (
-			<div style={ dateHasPassed ? { color: "red" } : isToday ? { color: "orange" } : null } >
-				{dateHasPassed ? `Expired: ${timeUntil}` : `Expires: ${expiration}` } <br/>
-				<small>{ dateHasPassed ? null : timeUntil }</small>
+			<div style={ isToday || dateHasPassed ? { color: "red" } : timeUntil.includes("hours") ? { color: "orange" } : null } >
+				{ 
+					isToday ? "Expires Today"
+						: timeUntil.includes("hours") ? "Expires Tomorrow"
+						: dateHasPassed ? `Expired: ${timeUntil}` 
+					: `Expires ${timeUntil}` 
+				} <br/>
+				<small style={{ color: "red" }}>{ dateHasPassed || timeUntil.includes("hours") ? null : expiration }</small>
 			</div>
 		)
 	}
@@ -109,7 +114,7 @@ class KitchenItem extends React.Component {
 		const item = this.props.item 
 		const showEditModal = this.state.showEditModal //boolean
 		const showAdvanceModal = this.state.showAdvanceModal //boolean
-		console.log('kitchenItem', item)
+
 		return(
 			<List.Item>
 		      { /*<React.Fragment>

@@ -38,8 +38,6 @@ class ItemContainer extends React.Component {
 	}
 
 	render(){
-		console.log("ItemContainer", this.props.items)
-
 		return(
 			<React.Fragment>
 				<div>
