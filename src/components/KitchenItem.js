@@ -99,11 +99,11 @@ class KitchenItem extends React.Component {
 		this.props.deleteItem(this.props.item.id)
 	}
 
-	handleAdvanceDate = (increment="day") => {
+	handleAdvanceDate = (num=1, increment="day") => {
 		const moment = require('moment');
 		const itemObject = {
 			id: this.props.item.id,
-			expiration: moment(this.props.item.expiration).add(1, increment).format()
+			expiration: moment(this.props.item.expiration).add(num, increment).format()
 		}
 
 		this.props.updateItem(itemObject)
