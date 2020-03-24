@@ -41,7 +41,7 @@ class ItemContainer extends React.Component {
 		return(
 			<React.Fragment>
 				<div>
-					<select id="stocked-item-filter" defaultValue = { this.state.filter } onChange={event => this.updateFilter(event)}>
+					<select className="ui select" id="stocked-item-filter" defaultValue = { this.state.filter } onChange={event => this.updateFilter(event)}>
 						<option value='' disabled>Filter By Type:</option>
 						{ this.state.categories.map(cat => <option value={cat.name} key={cat.name}>{cat.name}</option>) }
 					</select>

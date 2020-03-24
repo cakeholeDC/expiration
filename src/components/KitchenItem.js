@@ -117,35 +117,36 @@ class KitchenItem extends React.Component {
 
 		return(
 			<List.Item>
-		      { /*<React.Fragment>
-			      <List.Content floated='left'>
-				        { this.getFontAwesomeIcon(item) }
-			      </List.Content>
-			      <List.Content>
-			      	<div>
-				        { `${item.name} (x${item.qty})`}
-			        </div>
-			        <div>
-				        Expires: {this.displayExpiration(item.expiration)}
-			        </div>
-			      </List.Content>
-			      <List.Content floated='right'>
-			        { this.renderActionButtons() }
-			        <AdvanceModal 
+		      { <div class="kichen-item-container">
+					<div class="item-icon" floated='left'>
+					    { this.getFontAwesomeIcon(item) }
+					</div>
+					<div class="item-qty">
+						{ item.qty }&nbsp; — &nbsp;
+					</div>
+					<div class="item-name">
+						{ item.name }
+					</div>
+					<div class="item-expire">
+						{ this.displayExpiration(item.expiration) }
+					</div>
+					<div class="item-actions">
+					{ this.renderActionButtons() }
+					<AdvanceModal 
 					  	showModal={ showAdvanceModal }
 						closeModal={ this.toggleAdvanceModal }
 						advanceDate={ this.handleAdvanceDate }
 					  />
-					  <ItemFormModal
+					<ItemFormModal
 						prefillData={ item }
 						showModal={ showEditModal }
 						closeModal={ this.toggleEditModal }
 						submitForm={ this.props.updateItem }
 					/>
-			      </List.Content>
-		      </React.Fragment> */}
+					</div>
+		      </div> }
 		      
-		      { <List.Content>
+		      { /*<List.Content>
 		      	<Table basic='very' columns={5}>
 				    <Table.Body>
 				      <Table.Row>
@@ -170,7 +171,7 @@ class KitchenItem extends React.Component {
 					closeModal={ this.toggleEditModal }
 					submitForm={ this.props.updateItem }
 				/>
-		      </List.Content> }
+		      </List.Content> */}
 		    </List.Item>
 			)
 	}

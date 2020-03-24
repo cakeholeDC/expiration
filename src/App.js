@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import KitchenContainer from './containers/KitchenContainer.js'
 
 function App() {

@@ -104,9 +104,9 @@ class KitchenContainer extends React.Component {
 		return(
 			this.state.kitchen ?
 				<React.Fragment>
-					<div>
-						<h1>{this.state.kitchen.name}</h1>
-						<h3>{this.state.kitchen.location}</h3>
+					<div id="kitchen-details">
+						<h1 class="kitchen-name">{this.state.kitchen.name}</h1>
+						<h3 class="kitchen-address">{this.state.kitchen.location}</h3>
 					</div>
 					<NewItemPrompt 
 						createItem={this.createNewItem}/>
