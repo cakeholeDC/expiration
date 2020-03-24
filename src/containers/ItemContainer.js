@@ -39,26 +39,30 @@ class ItemContainer extends React.Component {
 
 	render(){
 		return(
-			<React.Fragment>
-				<div>
-					<select className="ui select" id="stocked-item-filter" defaultValue = { this.state.filter } onChange={event => this.updateFilter(event)}>
-						<option value='' disabled>Filter By Type:</option>
-						{ this.state.categories.map(cat => <option value={cat.name} key={cat.name}>{cat.name}</option>) }
+			<div id="item-container">
+				<div id="item-filter-container">
+					<label>Filter By Type:</label>
+					<select className="ui dropdown" id="stocked-item-select" defaultValue = { this.state.filter } onChange={ event => this.updateFilter(event) }>
+						<option value='' >All</option>
+						{ /* add options for categories */ }
+						{ this.state.categories.map(cat => <option value={ cat.name } key={ cat.name }>{ cat.name }</option>) }
 					</select>
 					{ this.state.filter ? <button onClick={ this.clearFilter }>Clear Filter</button> : null}
 				</div>
-				<List celled verticalAlign='middle' size="massive">
-					{ this.filteredItems().map(item =>
-							<KitchenItem 
-								item={item}
-								key={item.name + item.id}
-								updateItem={ this.props.updateItem }
-								deleteItem={ this.props.deleteItem }
-							/>
-						)
-					}
-				</List>
-			</React.Fragment>
+				<div id="item-list-container">
+					<List className="item-list" celled verticalAlign='middle' size="massive">
+						{ this.filteredItems().map(item =>
+								<KitchenItem 
+									item={ item }
+									key={ item.name + item.id }
+									updateItem={ this.props.updateItem }
+									deleteItem={ this.props.deleteItem }
+								/>
+							)
+						}
+					</List>
+				</div>
+			</div>
 		)
 	}
 }

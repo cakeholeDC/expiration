@@ -2,8 +2,44 @@
   text-align: center;
 }
 
+#new-item-container {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 2em;
+	
+	.add-item {
+		width: 30%;
+	}
+}
+
+
+#item-filter-container {
+	width: 100%;
+	margin-left: 1em;
+	font-weight: bold;
+	font-size: 1.125em;
+	
+	label,
+	select {
+		float: left;
+	}
+}
+
+#item-list-container {
+	clear: left;
+	padding-top: 1em;
+}
+
+#stocked-item-select {
+	background-color: #fff;
+	width: 10em;
+	margin-left: 1em;
+}
+
+
 #kitchen-details {
 	.kitchen-name {
+		font-size: 2.75em;
 		margin-bottom: 0px;
 	}
 	.kitchen-address {

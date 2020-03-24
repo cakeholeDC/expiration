@@ -108,8 +108,9 @@ class KitchenContainer extends React.Component {
 						<h1 class="kitchen-name">{this.state.kitchen.name}</h1>
 						<h3 class="kitchen-address">{this.state.kitchen.location}</h3>
 					</div>
-					<NewItemPrompt 
-						createItem={this.createNewItem}/>
+					<div>
+						<NewItemPrompt createItem={this.createNewItem}/>
+					</div>
 					<ItemContainer 
 						items={ sortedItems }
 						updateItem={ this.updateItem }

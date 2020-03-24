@@ -42,10 +42,12 @@ class KitchenItem extends React.Component {
 
 		return (
 			<div style={ isToday || dateHasPassed ? { color: "red" } : timeUntil.includes("hours") ? { color: "orange" } : null } >
-				{ 
-					isToday ? "Expires Today"
+				{ isToday ? "Expires Today" //expires today
+						//account for return of "nn Hours"
 						: timeUntil.includes("hours") ? "Expires Tomorrow"
+						//account for expired items
 						: dateHasPassed ? `Expired: ${timeUntil}` 
+					// show expiration
 					: `Expires ${timeUntil}` 
 				} <br/>
 				<small style={{ color: "red" }}>{ dateHasPassed || timeUntil.includes("hours") ? null : expiration }</small>
@@ -56,27 +58,13 @@ class KitchenItem extends React.Component {
 	renderActionButtons(){
 		return (
 			<Button.Group size="huge">
-		      <Button
-		      	icon
-		      	negative
-		      	alt="Delete Item"
-		      	onClick={ () => this.handleDelete() }
-		      >
+		      <Button icon negative alt="Delete Item" onClick={ () => this.handleDelete() }>
 		        <Icon name='trash alternate' alt="Delete Item"/>
 		      </Button>
-		      <Button
-		      	icon
-		      	alt="Edit Item"
-		      	onClick={ () => this.toggleEditModal() }
-		      >
+		      <Button icon alt="Edit Item" onClick={ () => this.toggleEditModal() }>
 		        <Icon name='edit' alt="Edit Item"/>
 		      </Button>
-		      <Button 
-		      	icon
-		      	positive
-		      	onClick={ () => this.toggleAdvanceModal() /*this.handleAdvanceDate()*/ }
-		      	alt="Advance Date"
-		      >
+		      <Button icon positive onClick={ () => this.toggleAdvanceModal() } alt="Advance Date">
 		        <Icon name='redo' alt="Advance Date"/>
 		      </Button>
 		    </Button.Group>
@@ -122,7 +110,8 @@ class KitchenItem extends React.Component {
 					    { this.getFontAwesomeIcon(item) }
 					</div>
 					<div class="item-qty">
-						{ item.qty }&nbsp; — &nbsp;
+						{ item.qty }
+						&nbsp;|&nbsp;
 					</div>
 					<div class="item-name">
 						{ item.name }

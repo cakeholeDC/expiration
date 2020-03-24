@@ -31,12 +31,12 @@ class NewItemPrompt extends React.Component {
 		const newItemName = this.state.search
 		const showNewItemModal = this.state.showNewItemForm
 		return(
-			<React.Fragment>
+			<div id="new-item-container">
 				<Form 
 					onChange={(event) => this.handleNewItemPromptChange(event)}
 					onSubmit={(event) => this.handleNewItemPromptAction(event)}
 				>
-					<Input name="search" icon='search' placeholder='Add an item...' />
+					<Input className="add-item" name="search" icon='plus' placeholder='Add an item...' />
 				</Form>
 				<ItemFormModal
 					search={ newItemName }
@@ -44,7 +44,7 @@ class NewItemPrompt extends React.Component {
 					closeModal={ this.toggleNewItemModal }
 					submitForm={ this.props.createItem }
 				/>
-			</React.Fragment>
+			</div>
 		)
 	}
 }
