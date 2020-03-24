@@ -7,7 +7,7 @@ const CATEGORY_URL = "http://localhost:3000/categories/"
 class ItemContainer extends React.Component {
 	state={
 		categories: [],
-		filter: null
+		filter: ''
 	}
 
 	componentDidMount(){
@@ -26,7 +26,7 @@ class ItemContainer extends React.Component {
 		this.setState({
 			filter: null
 		})
-		document.getElementById('stocked-item-filter').value = null
+		document.getElementById('stocked-item-filter').value = ''
 	}
 
 	filteredItems = () => {

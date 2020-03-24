@@ -150,7 +150,7 @@ class KitchenItem extends React.Component {
 				    <Table.Body>
 				      <Table.Row>
 				      	<Table.Cell width="one" textAlign='center'>{ this.getFontAwesomeIcon(item) }</Table.Cell>
-					    <Table.Cell width="one" textAlign='right'>{item.qty}</Table.Cell>
+					    <Table.Cell width="two" textAlign='right'>{item.qty}</Table.Cell>
 				        <Table.Cell width="five" textAlign='left'>{item.name}</Table.Cell>
 				        <Table.Cell width="five">{this.displayExpiration(item.expiration)}</Table.Cell>
 				        <Table.Cell width="one">
