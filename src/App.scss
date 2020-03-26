@@ -58,7 +58,13 @@
 
   .item-icon {
     flex: 1;
+    
+    img.png-icon {
+	  	height: 50px;
+	  }
   }
+
+
 
   .item-qty {
     flex: 2;

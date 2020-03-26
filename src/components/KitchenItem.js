@@ -11,7 +11,7 @@ class KitchenItem extends React.Component {
 
 	getFontAwesomeIcon(item){
 		if (!item) {
-			debugger
+			console.error("item not found")
 		} else {
 			switch(item.category.name.toLowerCase()){
 				case "vegetable":
@@ -30,7 +30,25 @@ class KitchenItem extends React.Component {
 				 return <i className="fas fa-utensils" style={{fontSize: "1.5em"}}></i>
 			}
 		}
+	}
 
+	getIconPNG(item) {
+		switch(item.category.name.toLowerCase()){
+			case "vegetable":
+				return <img className="png-icon" src="/icons/gastro/salad.png" alt="vegetable"/>
+			case "fruit":
+				return <img className="png-icon" src="/icons/gastro/carrot.png" alt="fruit"/>
+			case "grain":
+				return <img className="png-icon" src="/icons/gastro/grain.png" alt="grain"/>
+			case "protein":
+				return <img className="png-icon" src="/icons/gastro/meat-1.png" alt="protein"/>
+			case "dairy":
+				return <img className="png-icon" src="/icons/gastro/milk-1.png" alt="dairy"/>
+			case "beverage":
+				return <img className="png-icon" src="/icons/gastro/pint.png" alt="beverage"/>
+			default:
+			 return <img className="png-icon" src="/icons/gastro/cutlery.png" alt="fork"/>
+		}
 	}
 
 	displayExpiration(input){
@@ -107,7 +125,8 @@ class KitchenItem extends React.Component {
 			<List.Item>
 		      { <div class="kichen-item-container">
 					<div class="item-icon" floated='left'>
-					    { this.getFontAwesomeIcon(item) }
+					    { /*this.getFontAwesomeIcon(item)*/ }
+					    { this.getIconPNG(item) }
 					</div>
 					<div class="item-qty">
 						{ item.qty }
