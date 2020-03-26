@@ -51,6 +51,40 @@ class KitchenItem extends React.Component {
 		}
 	}
 
+	getItemIcon = (item) => {
+		console.log(item)
+		const imageExists = require('image-exists');
+		const icon = item.name.replace(' ','-').toLowerCase()
+		const src = `/icons/gastro/${ icon }.png`;
+		
+		return imageExists(src, function(exists) {
+			console.log(icon, exists, src)
+		  if (exists) {
+		    return <img className="png-icon" src={ src } alt={ icon }/>
+		  }
+		  else {
+		  	// debugger
+		    //return <img className="png-icon" src="/icons/gastro/cutlery.png" alt="fork"/>
+		    switch(item.category.name.toLowerCase()){
+				case "vegetable":
+					return <img className="png-icon" src="/icons/gastro/salad.png" alt="vegetable"/>
+				case "fruit":
+					return <img className="png-icon" src="/icons/gastro/carrot.png" alt="fruit"/>
+				case "grain":
+					return <img className="png-icon" src="/icons/gastro/grain.png" alt="grain"/>
+				case "protein":
+					return <img className="png-icon" src="/icons/gastro/meat-1.png" alt="protein"/>
+				case "dairy":
+					return <img className="png-icon" src="/icons/gastro/milk-1.png" alt="dairy"/>
+				case "beverage":
+					return <img className="png-icon" src="/icons/gastro/pint.png" alt="beverage"/>
+				default:
+				 return <img className="png-icon" src="/icons/gastro/cutlery.png" alt="fork"/>
+			}
+		  }
+		});
+	}
+
 	displayExpiration(input){
 		const moment = require('moment');
 		const expiration = moment(input).format("MMM DD, YYYY")
@@ -126,7 +160,8 @@ class KitchenItem extends React.Component {
 		      { <div class="kichen-item-container">
 					<div class="item-icon" floated='left'>
 					    { /*this.getFontAwesomeIcon(item)*/ }
-					    { this.getIconPNG(item) }
+					    { /* this.getIconPNG(item) */ }
+					    { this.getItemIcon(item) }
 					</div>
 					<div class="item-qty">
 						{ item.qty }
