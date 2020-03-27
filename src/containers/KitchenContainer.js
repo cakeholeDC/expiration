@@ -4,10 +4,14 @@ import NewItemPrompt from '../components/NewItemPrompt.js'
 
 const KITCHEN_URL = "http://localhost:3000/kitchens"
 const ITEM_URL = "http://localhost:3000/items"
+const CATEGORY_URL = "http://localhost:3000/categories"
+const LOCATION_URL = "http://localhost:3000/locations"
 
 class KitchenContainer extends React.Component {
 	state={
-		kitchen: null
+		kitchen: null,
+		categories: [],
+		locations: []
 	}
 
 	componentDidMount(){
@@ -16,6 +20,14 @@ class KitchenContainer extends React.Component {
 			.then(kitchenData => this.setState({
 				kitchen: kitchenData
 			}))
+
+		fetch(CATEGORY_URL)
+			.then(res => res.json())
+			.then(cats => this.setState({ categories: cats }))
+
+		fetch(LOCATION_URL)
+			.then(res => res.json())
+			.then(locs => this.setState({ locations: locs }))
 	}
 
 	createNewItem = (item) => {
@@ -105,16 +117,18 @@ class KitchenContainer extends React.Component {
 			this.state.kitchen ?
 				<React.Fragment>
 					<div id="kitchen-details">
-						<h1 class="kitchen-name">{this.state.kitchen.name}</h1>
-						<h3 class="kitchen-address">{this.state.kitchen.location}</h3>
+						<h1 className="kitchen-name">{this.state.kitchen.name}</h1>
+						<h3 className="kitchen-address">{this.state.kitchen.location}</h3>
 					</div>
 					<div>
 						<NewItemPrompt createItem={this.createNewItem}/>
 					</div>
-					<ItemContainer 
+					<ItemContainer
 						items={ sortedItems }
 						updateItem={ this.updateItem }
 						deleteItem={ this.deleteItem }
+						categories={ this.state.categories }
+						locations={ this.state.locations }
 					/>
 				</React.Fragment>
 			: null

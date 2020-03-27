@@ -54,7 +54,17 @@ class KitchenItem extends React.Component {
 	getItemIcon = (item) => {
 		console.log(item)
 		const imageExists = require('image-exists');
-		const icon = item.name.replace(' ','-').toLowerCase()
+		let icon = item.name.replace(' ','-').toLowerCase()
+		//overrides
+		if (icon === "butter-lettuce"){
+			icon = "lettuce"
+		}
+		if (icon === "guacamole"){
+			icon = "avocado"
+		}
+		if (icon === "mozzarella" || icon === "swiss-cheese"){
+			icon = "cheese-1"
+		}
 		const src = `/icons/gastro/${ icon }.png`;
 		
 		return imageExists(src, function(exists) {
@@ -157,23 +167,23 @@ class KitchenItem extends React.Component {
 
 		return(
 			<List.Item>
-		      { <div class="kichen-item-container">
-					<div class="item-icon" floated='left'>
+		      { <div className="kichen-item-container">
+					<div className="item-icon" floated='left'>
 					    { /*this.getFontAwesomeIcon(item)*/ }
 					    { /* this.getIconPNG(item) */ }
 					    { this.getItemIcon(item) }
 					</div>
-					<div class="item-qty">
+					<div className="item-qty">
 						{ item.qty }
 						&nbsp;|&nbsp;
 					</div>
-					<div class="item-name">
+					<div className="item-name">
 						{ item.name }
 					</div>
-					<div class="item-expire">
+					<div className="item-expire">
 						{ this.displayExpiration(item.expiration) }
 					</div>
-					<div class="item-actions">
+					<div className="item-actions">
 					{ this.renderActionButtons() }
 					<AdvanceModal 
 					  	showModal={ showAdvanceModal }
