@@ -38,6 +38,12 @@ class ItemContainer extends React.Component {
 		return(
 			<div id="item-container">
 				<div id="item-filter-container">
+					{ /* LOCATION FILTERING */ }
+					<div className='location-filters'>
+					{ 
+						this.props.locations.map(loc => <label className="loc-filter"><input type="checkbox" name={ loc.name } value={ loc.name }/>{ loc.name }</label> ) 
+					}
+					</div>
 					{ /* CATEGORY FILTERING */ }
 					<div>
 						<label>Filter By Type:</label>
@@ -48,13 +54,6 @@ class ItemContainer extends React.Component {
 						</select>
 						{ this.state.filter ? <button onClick={ this.clearFilter }>Clear Filter</button> : null}
 					</div>
-					{ /* LOCATION FILTERING */ }
-					{/*<div>
-											<label>Location:</label>
-											<form name="location-filter">
-												{  this.props.locations.map(loc => <input type="checkbox" key={ loc.name } value={ loc.name }>{ loc.name }</input>) }
-											</form>
-										</div>*/}
 				</div>
 				<div id="item-list-container">
 					<List className="item-list" celled verticalAlign='middle' size="massive">

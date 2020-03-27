@@ -52,9 +52,9 @@ class KitchenItem extends React.Component {
 	}
 
 	getItemIcon = (item) => {
-		console.log(item)
 		const imageExists = require('image-exists');
 		let icon = item.name.replace(' ','-').toLowerCase()
+
 		//overrides
 		if (icon === "butter-lettuce"){
 			icon = "lettuce"
@@ -65,34 +65,39 @@ class KitchenItem extends React.Component {
 		if (icon === "mozzarella" || icon === "swiss-cheese"){
 			icon = "cheese-1"
 		}
-		const src = `/icons/gastro/${ icon }.png`;
-		
-		return imageExists(src, function(exists) {
-			console.log(icon, exists, src)
-		  if (exists) {
-		    return <img className="png-icon" src={ src } alt={ icon }/>
-		  }
-		  else {
-		  	// debugger
-		    //return <img className="png-icon" src="/icons/gastro/cutlery.png" alt="fork"/>
+
+		var src = `/icons/gastro/${ icon }.png`;
+
+		imageExists(src, function(exists) {
+			// console.log(icon, exists, src)
+		  if (!exists) {
 		    switch(item.category.name.toLowerCase()){
 				case "vegetable":
-					return <img className="png-icon" src="/icons/gastro/salad.png" alt="vegetable"/>
+					src="/icons/gastro/salad.png"
+					break;
 				case "fruit":
-					return <img className="png-icon" src="/icons/gastro/carrot.png" alt="fruit"/>
+					src="/icons/gastro/carrot.png"
+					break;
 				case "grain":
-					return <img className="png-icon" src="/icons/gastro/grain.png" alt="grain"/>
+					src="/icons/gastro/grain.png"
+					break;
 				case "protein":
-					return <img className="png-icon" src="/icons/gastro/meat-1.png" alt="protein"/>
+					src="/icons/gastro/meat-1.png"
+					break;
 				case "dairy":
-					return <img className="png-icon" src="/icons/gastro/milk-1.png" alt="dairy"/>
+					src="/icons/gastro/milk-1.png"
+					break;
 				case "beverage":
-					return <img className="png-icon" src="/icons/gastro/pint.png" alt="beverage"/>
+					src="/icons/gastro/pint.png"
+					break;
 				default:
-				 return <img className="png-icon" src="/icons/gastro/cutlery.png" alt="fork"/>
+				 	src ="/icons/gastro/cutlery.png"
+					break;
 			}
 		  }
-		});
+		})
+		
+		return <img className="png-icon" src={ src }/>
 	}
 
 	displayExpiration(input){
@@ -164,12 +169,11 @@ class KitchenItem extends React.Component {
 		const item = this.props.item 
 		const showEditModal = this.state.showEditModal //boolean
 		const showAdvanceModal = this.state.showAdvanceModal //boolean
-
 		return(
 			<List.Item>
 		      { <div className="kichen-item-container">
 					<div className="item-icon" floated='left'>
-					    { /*this.getFontAwesomeIcon(item)*/ }
+					    { /* this.getFontAwesomeIcon(item) */ }
 					    { /* this.getIconPNG(item) */ }
 					    { this.getItemIcon(item) }
 					</div>
