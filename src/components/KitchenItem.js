@@ -52,25 +52,14 @@ class KitchenItem extends React.Component {
 	}
 
 	getItemIcon = (item) => {
-		const imageExists = require('image-exists');
 		let icon = item.name.replace(/ /g,"-").toLowerCase()
 
-		//specific overrides
-		switch(icon){
-			case "guacamole": 
-				icon = "avocado"
-				break;
-			case "mozzarella": 
-				icon = "cheese-1"
-				break;
-			case "swiss-cheese": 
-				icon = "cheese-1"
-				break;
-		}
-
-		// keywords
+		// keyword overrides
+		if (icon.indexOf("guacamole") !== -1) { icon = 'avocado' }
 		if (icon.indexOf("sausage") !== -1) { icon = 'sausage' }
 		if (icon.indexOf("keilbasa") !== -1) { icon = 'sausage' }
+		if (icon.indexOf("salami") !== -1) { icon = 'salami' }
+		if (icon.indexOf("swiss") !== -1 && item.category.name.toLowerCase() === "cheese") { icon = 'cheese-1' }
 		if (icon.indexOf("salami") !== -1) { icon = 'salami' }
 		if (icon.indexOf("pepper") !== -1) { icon = 'pepper' }
 		if (icon.indexOf("cookie") !== -1) { icon = 'cookies' }
@@ -112,45 +101,30 @@ class KitchenItem extends React.Component {
 			}
 		}
 
-		var src = `/icons/gastro/${ icon }.png`;
+		const src = `/icons/gastro/${ icon }.png`;
 
-		imageExists(src, function(exists) {
-			// console.log(icon, exists, src)
-		  if (!exists) {
-		    switch(item.category.name.toLowerCase()){
-				case "vegetable":
-					src="/icons/gastro/cabbage.png"
-					break;
-				case "cheese":
-					src="/icons/gastro/cheese.png"
-					break;
-				case "snack":
-					src="/icons/gastro/chips.png"
-					break;
-				case "fruit":
-					src="/icons/gastro/carrot.png"
-					break;
-				case "grain":
-					src="/icons/gastro/grain.png"
-					break;
-				case "protein":
-					src="/icons/gastro/meat-1.png"
-					break;
-				// case "dairy":
-				// 	src="/icons/gastro/milk-1.png"
-				// 	break;
-				case "beverage":
-					src="/icons/gastro/water-1.png"
-					break;
-				default:
-				 	src ="/icons/gastro/groceries.png"
-					break;
-			}
-		  }
-		})
-		
-		return <img className="png-icon" src={ src }/>
+		return <img className="png-icon" src={ src } onError={event => this.setCategoryFallbackIcon(event, item)}/>
 	}
+
+	setCategoryFallbackIcon(ev, item){
+		const category = item.category.name.toLowerCase()
+		let src
+
+		if (category === "vegetable") { src="/icons/gastro/cabbage.png" }
+		else if (category === "cheese") { src="/icons/gastro/cheese.png" }
+		else if (category === "snack") { src="/icons/gastro/chips.png" }
+		else if (category === "fruit") { src="/icons/gastro/carrot.png" }
+		else if (category === "grain") { src="/icons/gastro/grain.png" }
+		else if (category === "protein") { src="/icons/gastro/meat-1.png" }
+		else if (category === "dairy") { src="/icons/gastro/milk-1.png" }
+		else if (category === "beverage") { src="/icons/gastro/water-1.png" }
+		else {
+			src ="/icons/gastro/groceries.png"
+		}
+
+	    ev.target.src = src
+	}
+
 
 	displayExpiration(input){
 		const moment = require('moment');
