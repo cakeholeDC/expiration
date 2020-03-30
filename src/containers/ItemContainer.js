@@ -1,37 +1,59 @@
 import React from 'react'
 import KitchenItem from '../components/KitchenItem.js'
-import { List } from 'semantic-ui-react'
+import { List, Button } from 'semantic-ui-react'
 
 
 class ItemContainer extends React.Component {
 	state={
-		categories: [],
-		filter: ''
+		categoryFilter: '',
+		locationFilter: []
 	}
 
-	updateFilter(event){
+	updateCategoryFilter(event){
 		this.setState({
-			filter: event.target.value
+			categoryFilter: event.target.value
 		})
+	}
+
+	updateLocationFilter(event){
+		// debugger
+		if (this.state.locationFilter.includes(event.target.value)){
+			this.setState({
+				locationFilter: [...this.state.locationFilter.filter(value => value !== event.target.value)]
+			})
+			console.log('locationFilter', [...this.state.locationFilter.filter(value => value !== event.target.value)])
+		} else {
+			this.setState({
+				locationFilter: [...this.state.locationFilter, event.target.value]
+			})
+			console.log('locationFilter', [...this.state.locationFilter, event.target.value])
+		}
 	}
 
 	clearFilter = () => {
 		this.setState({
-			filter: null
+			categoryFilter: ''
 		})
-		document.getElementById('stocked-item-filter').value = ''
+		document.getElementById('stocked-item-select').value = ''
 	}
 
 	categoryFilter = () => {
-		if (this.state.filter) {
-			return this.props.items.filter(item => item.category.name === this.state.filter)
+		if (this.state.categoryFilter) {
+			return this.props.items.filter(item => item.category.name === this.state.categoryFilter)
 		} else {
 			return this.props.items
 		}
 	}
 
 	filteredItems = () => {
-		return this.categoryFilter()
+		// return this.categoryFilter()
+		if (this.state.locationFilter < 1){
+			return this.categoryFilter()
+		}
+		else {
+			return this.categoryFilter().filter(item => this.state.locationFilter.includes(item.location.name))
+		}
+
 	}
 
 	render(){
@@ -39,20 +61,23 @@ class ItemContainer extends React.Component {
 			<div id="item-container">
 				<div id="item-filter-container">
 					{ /* LOCATION FILTERING */ }
-					<div className='location-filters'>
-					{ 
-						this.props.locations.map(loc => <label className="loc-filter"><input type="checkbox" name={ loc.name } value={ loc.name }/>{ loc.name }</label> ) 
-					}
+					<div className='location-filters inline-label-form'>
+					<label>Locations:</label>
+						<div className="location-boxes quarter">
+							{ 
+								this.props.locations.map(loc => <label className="loc-filter" key={ loc.name }><input type="checkbox" name={ loc.name } key={ loc.name } value={ loc.name } onChange={event => this.updateLocationFilter(event) }/>{ loc.name }</label> ) 
+							}
+						</div>
 					</div>
 					{ /* CATEGORY FILTERING */ }
-					<div>
+					<div className='category-filters'>
 						<label>Filter By Type:</label>
-						<select className="ui dropdown" id="stocked-item-select" defaultValue = { this.state.filter } onChange={ event => this.updateFilter(event) }>
+						<select className="ui dropdown" id="stocked-item-select" defaultValue = { this.state.categoryFilter } onChange={ event => this.updateCategoryFilter(event) }>
 							<option value='' >All</option>
 							{ /* add options for categories */ }
-							{ /*this.props.categories.map(cat => <option value={ cat.name } key={ cat.name }>{ cat.name }</option>) */}
+							{ this.props.categories.map(cat => <option value={ cat.name } key={ cat.name }>{ cat.name }</option>) }
 						</select>
-						{ this.state.filter ? <button onClick={ this.clearFilter }>Clear Filter</button> : null}
+						{ this.state.categoryFilter ? <Button size="medium" onClick={ this.clearFilter }>Clear Filter</Button> : null}
 					</div>
 				</div>
 				<div id="item-list-container">
