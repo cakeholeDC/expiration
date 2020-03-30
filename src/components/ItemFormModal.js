@@ -125,6 +125,7 @@ class ItemForm extends React.Component {
 		
 		return(
 			<Modal
+				id="item-modal"
 			    open={ this.props.showModal }
 			    onClose={ this.props.closeModal }
 			    closeOnDimmerClick
@@ -195,7 +196,7 @@ class ItemForm extends React.Component {
 				    			placeholder="Planning to use for Short Rib Chili on MM/DD/YYYY"
 				    			value={this.state.note}
 				    		/>
-				    		<Button floated="right" type='submit'>{ !this.props.prefillData ? "Add Item" : "Update Item"}</Button>
+				    		<Button primary floated="right" type='submit'>{ !this.props.prefillData ? "Add Item" : "Update Item"}</Button>
 				    	</Form>
 					</Modal.Description>
 				</Modal.Content>

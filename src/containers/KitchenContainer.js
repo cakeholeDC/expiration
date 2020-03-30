@@ -11,7 +11,8 @@ class KitchenContainer extends React.Component {
 	state={
 		kitchen: null,
 		categories: [],
-		locations: []
+		locations: [],
+		search: ''
 	}
 
 	componentDidMount(){
@@ -111,6 +112,12 @@ class KitchenContainer extends React.Component {
 			//then by name
 			if (a.name > b.name) return 1;
 			if (a.name < b.name) return -1;
+		}).filter(item => item.name.toLowerCase().includes(this.state.search))
+	}
+
+	updateItemFilter = (string) => {
+		this.setState({
+			search: string.toLowerCase()
 		})
 	}
 
@@ -125,7 +132,7 @@ class KitchenContainer extends React.Component {
 						<h3 className="kitchen-address">{this.state.kitchen.location}</h3>
 					</div>
 					<div>
-						<NewItemPrompt createItem={this.createNewItem}/>
+						<NewItemPrompt createItem={this.createNewItem} setResultFilter={this.updateItemFilter}/>
 					</div>
 					<ItemContainer
 						items={ sortedItems }

@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+
+  small {
+  	font-size: 1rem;
+  }
 }
 
 #new-item-container {
@@ -12,20 +16,25 @@
 	}
 }
 
+#item-modal {
+	padding-bottom: 1em;
+}
+
 #item-filter-container {
 	widows: 100%;
 	text-align: left;
 	border-top: 1px lightgray solid;
- 	// border-bottom: 1px lightgray solid;
+ 	padding: 1rem 3rem;
 
 }
 
 .location-filters {
   display: table;
   margin: auto;
-  margin-bottom: 12px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
   vertical-align: top;
-  width: 90%;
+  width: 100%;
   border-bottom: 1px lightgray solid;
   
   
@@ -96,10 +105,6 @@ input[type="radio"]{
   margin-right: 7px;
 }
 
-.category-filters {
-	width: 90%;
-	margin: auto;
-}
 
 
 

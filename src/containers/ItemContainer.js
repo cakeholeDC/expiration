@@ -56,6 +56,10 @@ class ItemContainer extends React.Component {
 
 	}
 
+	getNumResults(){
+		return `Displaying ${this.filteredItems().length} ${this.filteredItems().length > 1 ? "Items" : "Item"}`
+	}
+
 	render(){
 		return(
 			<div id="item-container">
@@ -78,8 +82,8 @@ class ItemContainer extends React.Component {
 							{ this.props.categories.map(cat => <option value={ cat.name } key={ cat.name }>{ cat.name }</option>) }
 						</select>
 						{ this.state.categoryFilter ? <Button size="medium" onClick={ this.clearFilter }>Clear Filter</Button> : null}
-						<h5>Currently showing { this.filteredItems().length } items</h5>
 					</div>
+					<h4>{ this.getNumResults() }</h4>
 				</div>
 				<div id="item-list-container">
 					<List className="item-list" celled verticalAlign='middle' size="massive">

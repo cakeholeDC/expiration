@@ -9,48 +9,6 @@ class KitchenItem extends React.Component {
 		showAdvanceModal: false
 	}
 
-	getFontAwesomeIcon(item){
-		if (!item) {
-			console.error("item not found")
-		} else {
-			switch(item.category.name.toLowerCase()){
-				case "vegetable":
-					return <i className="fas fa-carrot" style={{fontSize: "1.5em"}}></i>
-				case "fruit":
-					return <i className="fas fa-apple-alt" style={{fontSize: "1.5em"}}></i>
-				case "grain":
-					return <i className="fas fa-bread-slice" style={{fontSize: "1.5em"}}></i>
-				case "protein":
-					return <i className="fas fa-fish" style={{fontSize: "1.5em"}}></i>
-				case "dairy":
-					return <i className="fas fa-cheese" style={{fontSize: "1.5em"}}></i>
-				case "beverage":
-					return <i className="fas fa-beer" style={{fontSize: "1.5em"}}></i>
-				default:
-				 return <i className="fas fa-utensils" style={{fontSize: "1.5em"}}></i>
-			}
-		}
-	}
-
-	getIconPNG(item) {
-		switch(item.category.name.toLowerCase()){
-			case "vegetable":
-				return <img className="png-icon" src="/icons/gastro/salad.png" alt="vegetable"/>
-			case "fruit":
-				return <img className="png-icon" src="/icons/gastro/carrot.png" alt="fruit"/>
-			case "grain":
-				return <img className="png-icon" src="/icons/gastro/grain.png" alt="grain"/>
-			case "protein":
-				return <img className="png-icon" src="/icons/gastro/meat-1.png" alt="protein"/>
-			case "dairy":
-				return <img className="png-icon" src="/icons/gastro/milk-1.png" alt="dairy"/>
-			case "beverage":
-				return <img className="png-icon" src="/icons/gastro/pint.png" alt="beverage"/>
-			default:
-			 return <img className="png-icon" src="/icons/gastro/cutlery.png" alt="fork"/>
-		}
-	}
-
 	getItemIcon = (item) => {
 		let icon = item.name.replace(/ /g,"-").toLowerCase()
 
@@ -80,6 +38,7 @@ class KitchenItem extends React.Component {
 		if (icon.indexOf("cod") !== -1) { icon = 'fish' }
 		if (icon.indexOf("fish") !== -1) { icon = 'fish' }
 		if (icon.indexOf("salad") !== -1) { icon = 'salad' }
+		if (icon.indexOf("egg") !== -1) { icon = 'eggs' }
 
 		// pizza vs pizza crust vs pizza dough
 		if (icon.indexOf("pizza") !== -1) { 
@@ -148,6 +107,20 @@ class KitchenItem extends React.Component {
 		)
 	}
 
+	showPurchaseDate(item){
+		const moment = require('moment');
+		const expiration = moment(item.expiration).format("MMM DD, YYYY")
+		const timeUntil = moment(expiration).fromNow()
+		const dateHasPassed = moment(expiration).isBefore(moment())
+		const isToday = moment(expiration).isSame(moment().format("MMM DD, YYYY"))
+
+		if (isToday || dateHasPassed || timeUntil.includes("hours")){
+			return <small>Purchased: { moment(item.purchased).format("MMM DD, YYYY") }</small>
+		} else {
+			return null
+		}
+	}
+
 	renderActionButtons(){
 		return (
 			<Button.Group size="huge">
@@ -197,10 +170,8 @@ class KitchenItem extends React.Component {
 		const showAdvanceModal = this.state.showAdvanceModal //boolean
 		return(
 			<List.Item>
-		      { <div className="kichen-item-container">
+		    	<div className="kichen-item-container">
 					<div className="item-icon" floated='left'>
-					    { /* this.getFontAwesomeIcon(item) */ }
-					    { /* this.getIconPNG(item) */ }
 					    { this.getItemIcon(item) }
 					</div>
 					<div className="item-qty">
@@ -213,6 +184,7 @@ class KitchenItem extends React.Component {
 					</div>
 					<div className="item-expire">
 						{ this.displayExpiration(item.expiration) }
+						{ this.showPurchaseDate(item) }
 					</div>
 					<div className="item-actions">
 					{ this.renderActionButtons() }
@@ -228,34 +200,7 @@ class KitchenItem extends React.Component {
 						submitForm={ this.props.updateItem }
 					/>
 					</div>
-		      </div> }
-		      
-		      { /*<List.Content>
-		      	<Table basic='very' columns={5}>
-				    <Table.Body>
-				      <Table.Row>
-				      	<Table.Cell width="one" textAlign='center'>{ this.getFontAwesomeIcon(item) }</Table.Cell>
-					    <Table.Cell width="two" textAlign='right'>{item.qty}</Table.Cell>
-				        <Table.Cell width="five" textAlign='left'>{item.name}</Table.Cell>
-				        <Table.Cell width="five">{this.displayExpiration(item.expiration)}</Table.Cell>
-				        <Table.Cell width="one">
-				        	{ this.renderActionButtons() }
-				        </Table.Cell>
-				      </Table.Row>
-				    </Table.Body>
-				  </Table>
-				  <AdvanceModal 
-				  	showModal={ showAdvanceModal }
-					closeModal={ this.toggleAdvanceModal }
-					advanceDate={ this.handleAdvanceDate }
-				  />
-				  <ItemFormModal
-					prefillData={ item }
-					showModal={ showEditModal }
-					closeModal={ this.toggleEditModal }
-					submitForm={ this.props.updateItem }
-				/>
-		      </List.Content> */}
+		    	</div> 
 		    </List.Item>
 			)
 	}

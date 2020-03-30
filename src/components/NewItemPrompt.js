@@ -13,6 +13,9 @@ class NewItemPrompt extends React.Component {
 		this.setState({
 			[event.target.name]: event.target.value
 		})
+		if (event.target.name === "search") {
+			this.props.setResultFilter(event.target.value)
+		}
 	}
 
 	handleNewItemPromptAction(event){
