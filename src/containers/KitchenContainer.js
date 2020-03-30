@@ -58,6 +58,7 @@ class KitchenContainer extends React.Component {
 	}
 
 	updateItem = (item) => {
+
 		const patchConfig = {
 			method: "PATCH",
 			headers: {
@@ -66,8 +67,7 @@ class KitchenContainer extends React.Component {
 			},
 			body: JSON.stringify(item)
 		}
-
-
+		
 		fetch(`${ITEM_URL}/${item.id}`, patchConfig)
 			.then(res => res.json())
 			.then(item => {
@@ -80,23 +80,27 @@ class KitchenContainer extends React.Component {
 		})
 	}
 
-	deleteItem = (id) => {
-		const deleteConfig = {
-			method: "DELETE",
-			headers: {
-				'Content-Type': "application/json",
-				"Accept" : "application/json"
-			}
-		}
-		fetch(`${ITEM_URL}/${id}`, deleteConfig)
-			.then(res => res.json())
-			.then(jsonData => this.setState({
-				kitchen: {
-					...this.state.kitchen,
-					stocked_items: [...this.state.kitchen.stocked_items.filter(item => item.id !== id)]
+	deleteItem = (item) => {
+		const confirmDelete = window.confirm(`Are you sure you want to delete ${item.qty + ' ' + item.name}?\n\nThis cannot be undone.`)
+
+		if (confirmDelete){
+			const deleteConfig = {
+				method: "DELETE",
+				headers: {
+					'Content-Type': "application/json",
+					"Accept" : "application/json"
 				}
-			})
-			)
+			}
+			fetch(`${ITEM_URL}/${item.id}`, deleteConfig)
+				.then(res => res.json())
+				.then(jsonData => this.setState({
+					kitchen: {
+						...this.state.kitchen,
+						stocked_items: [...this.state.kitchen.stocked_items.filter(i => i.id !== item.id)]
+					}
+				})
+				)
+		}
 	}
 
 	sortStockedItems(items=[]){
@@ -117,7 +121,7 @@ class KitchenContainer extends React.Component {
 			this.state.kitchen ?
 				<React.Fragment>
 					<div id="kitchen-details">
-						<h1 className="kitchen-name">{this.state.kitchen.name}</h1>
+						<h1 className="kitchen-name">{this.state.kitchen.name} - {this.state.kitchen.stocked_items.length} Items</h1>
 						<h3 className="kitchen-address">{this.state.kitchen.location}</h3>
 					</div>
 					<div>

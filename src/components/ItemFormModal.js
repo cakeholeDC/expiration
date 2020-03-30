@@ -11,11 +11,13 @@ class ItemForm extends React.Component {
 		locations: null,
 		id: null,
 		name: "",
-		qty: "",
+		// qty: "",
+		qty: "1 Package", // TEMPORARY
 		purchased: "",
 		expiration: "",
-		notes: "",
-		location_id: "",
+		note: "",
+		// location_id: "",
+		location_id: 1, // TEMPORARY
 		category_id: ""
 	}
 
@@ -55,23 +57,65 @@ class ItemForm extends React.Component {
 		})
 	}
 
-	handleItemFormSubmit(event){
+	formIsValid(){
+		if ( this.state.name === "" 
+			|| this.state.qty === "" 
+			|| this.state.purchased === "" 
+			|| this.state.expiration === "" 
+			|| this.state.note === "" 
+			|| this.state.location_id === "" 
+			|| this.state.category_id === "")
+		{ 
+			return false 
+		} else {
+			return true
+		}
+	}
+
+	handleItemFormSubmit = (event) =>{
 		event.preventDefault()
 		const moment = require('moment')
 
-		const formData = {
-			id: this.state.id,
-			name: this.state.name ? this.state.name : this.props.search,
-			qty: this.state.qty,
-			purchased: moment(this.state.purchased).format(),
-			expiration: moment(this.state.expiration).format(),
-			notes: this.state.notes,
-			location_id: this.state.location_id,
-			category_id: this.state.category_id
-		}
+		// if (this.formIsValid()){
+			const formData = {
+				id: this.state.id,
+				name: this.state.name ? this.state.name : this.props.search,
+				qty: this.state.qty,
+				purchased: moment(this.state.purchased).format(),
+				expiration: moment(this.state.expiration).format(),
+				note: this.state.note,
+				location_id: this.state.location_id,
+				category_id: this.state.category_id
+			}
 
-		this.props.submitForm(formData)
-		this.props.closeModal()
+			this.props.submitForm(formData)
+			event.target.reset()
+				// don't clear on .reset() ....?
+				// clearing manually
+				event.target.name.value = ''
+				event.target.qty.value = ''
+			
+			this.props.closeModal()
+			
+			if (!this.props.prefillData){
+				this.setState({
+					id: null,
+					name: "",
+					// qty: "",
+					// purchased: "",
+					// expiration: "",
+					purchased: moment().format("YYYY-MM-DD"), // TEMPORARY
+					expiration: moment().add(1, 'month').format("YYYY-MM-DD"), //TEMPORARY
+					note: "",
+					// location_id: "",
+					category_id: ""
+				})
+			}
+		// } else {
+		// 	window.alert("please check the form again")
+		// }
+
+		
 	}
 
 	render(){
@@ -95,13 +139,13 @@ class ItemForm extends React.Component {
 					    	onSubmit={ event => this.handleItemFormSubmit(event) }
 				    	>
 				    		<Form.Group widths="equal">
-					    		<Form.Input 
+					    		<Form.Input
 					    			type="text"
 					    			name="name" 
 					    			label="Item"
 					    			value={this.state.name === '' ? this.props.search : this.state.name } 
 					    			placeholder="Bagels"/>
-					    		<Form.Input 
+					    		<Form.Input
 					    			type="text" 
 					    			name="qty"
 					    			label='Quantity (ex. "3oz" or "1 jar")'
@@ -133,12 +177,12 @@ class ItemForm extends React.Component {
 					    		</select>
 				    		</div>
 				    		<Form.Group widths="equal">
-					    		<Form.Input 
+					    		<Form.Input
 					    			type="date" 
 					    			name="purchased" 
 					    			label="Purchased On"
 					    			value={ moment(this.state.purchased).format("YYYY-MM-DD") }/>
-					    		<Form.Input 
+					    		<Form.Input
 					    			type="date" 
 					    			name="expiration" 
 					    			label="Expiration"
@@ -146,10 +190,10 @@ class ItemForm extends React.Component {
 					    	</Form.Group>
 				    		<Form.TextArea 
 				    			type="text" 
-				    			name="notes" 
+				    			name="note" 
 				    			label="Notes:" 
 				    			placeholder="Planning to use for Short Rib Chili on MM/DD/YYYY"
-				    			value={this.state.notes}
+				    			value={this.state.note}
 				    		/>
 				    		<Button floated="right" type='submit'>{ !this.props.prefillData ? "Add Item" : "Update Item"}</Button>
 				    	</Form>

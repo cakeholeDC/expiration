@@ -142,14 +142,26 @@ input[type="radio"]{
 	  }
   }
 
+  
+
 
 
   .item-qty {
-    flex: 2;
+    flex: 3;
     text-align: right;
   }
 
-  .item-name,
+  .item-name {
+    flex: 4;
+  	padding-right: 1rem;
+    width: 90%;
+
+  	p.item-note {
+	    font-size: .55em;
+	    color: #737373;
+	}
+  }
+
   .item-expire {
   	flex: 4;
   }

@@ -53,17 +53,63 @@ class KitchenItem extends React.Component {
 
 	getItemIcon = (item) => {
 		const imageExists = require('image-exists');
-		let icon = item.name.replace(' ','-').toLowerCase()
+		let icon = item.name.replace(/ /g,"-").toLowerCase()
 
-		//overrides
-		if (icon === "butter-lettuce"){
-			icon = "lettuce"
+		//specific overrides
+		switch(icon){
+			case "guacamole": 
+				icon = "avocado"
+				break;
+			case "mozzarella": 
+				icon = "cheese-1"
+				break;
+			case "swiss-cheese": 
+				icon = "cheese-1"
+				break;
 		}
-		if (icon === "guacamole"){
-			icon = "avocado"
+
+		// keywords
+		if (icon.indexOf("sausage") !== -1) { icon = 'sausage' }
+		if (icon.indexOf("keilbasa") !== -1) { icon = 'sausage' }
+		if (icon.indexOf("salami") !== -1) { icon = 'salami' }
+		if (icon.indexOf("pepper") !== -1) { icon = 'pepper' }
+		if (icon.indexOf("cookie") !== -1) { icon = 'cookies' }
+		if (icon.indexOf("orange") !== -1) { icon = 'orange' } //to catch orange juice and plural oranges
+		if (icon.indexOf("carrot") !== -1) { icon = 'carrot' }
+		if (icon.indexOf("banana") !== -1) { icon = 'banana' }
+		if (icon.indexOf("lettuce") !== -1) { icon = 'lettuce' }
+		if (icon.indexOf("mushroom") !== -1) { icon = 'mushrooms' }
+		if (icon.indexOf("bread") !== -1) { icon = 'bread-1' }
+		if (icon.indexOf("tortilla") !== -1) { icon = 'bread-1' }
+		if (icon.indexOf("hamburger") !== -1) { icon = 'hamburger' }
+		if (icon.indexOf("hot dog") !== -1) { icon = 'hot-dog' }
+		if (icon.indexOf("hot-dog") !== -1) { icon = 'hot-dog' }
+		if (icon.indexOf("hotdog") !== -1) { icon = 'hot-dog' }
+		if (icon.indexOf("milk") !== -1) { icon = 'milk' }
+		if (icon.indexOf("beer") !== -1) { icon = 'pint' }
+		if (icon.indexOf("salmon") !== -1) { icon = 'fish' }
+		if (icon.indexOf("cod") !== -1) { icon = 'fish' }
+		if (icon.indexOf("fish") !== -1) { icon = 'fish' }
+		if (icon.indexOf("salad") !== -1) { icon = 'salad' }
+
+		// pizza vs pizza crust vs pizza dough
+		if (icon.indexOf("pizza") !== -1) { 
+			if (icon.indexOf("crust") !== -1){
+				icon = 'pizza-1'
+			} else if (icon.indexOf("dough") !== -1){
+				icon = 'pizza-1'
+			} else {
+				icon = 'pizza' 
+			}
 		}
-		if (icon === "mozzarella" || icon === "swiss-cheese"){
-			icon = "cheese-1"
+
+		// onion, but not red onion
+		if (icon.indexOf("onion") !== -1) { 
+			if (icon.indexOf("red") !== -1){
+				icon = 'red-onion'
+			} else {
+				icon = 'onion' 
+			}
 		}
 
 		var src = `/icons/gastro/${ icon }.png`;
@@ -73,7 +119,13 @@ class KitchenItem extends React.Component {
 		  if (!exists) {
 		    switch(item.category.name.toLowerCase()){
 				case "vegetable":
-					src="/icons/gastro/salad.png"
+					src="/icons/gastro/cabbage.png"
+					break;
+				case "cheese":
+					src="/icons/gastro/cheese.png"
+					break;
+				case "snack":
+					src="/icons/gastro/chips.png"
 					break;
 				case "fruit":
 					src="/icons/gastro/carrot.png"
@@ -84,14 +136,14 @@ class KitchenItem extends React.Component {
 				case "protein":
 					src="/icons/gastro/meat-1.png"
 					break;
-				case "dairy":
-					src="/icons/gastro/milk-1.png"
-					break;
+				// case "dairy":
+				// 	src="/icons/gastro/milk-1.png"
+				// 	break;
 				case "beverage":
-					src="/icons/gastro/pint.png"
+					src="/icons/gastro/water-1.png"
 					break;
 				default:
-				 	src ="/icons/gastro/cutlery.png"
+				 	src ="/icons/gastro/groceries.png"
 					break;
 			}
 		  }
@@ -151,7 +203,7 @@ class KitchenItem extends React.Component {
 	}
 	
 	handleDelete(){
-		this.props.deleteItem(this.props.item.id)
+		this.props.deleteItem(this.props.item)
 	}
 
 	handleAdvanceDate = (num=1, increment="day") => {
@@ -183,6 +235,7 @@ class KitchenItem extends React.Component {
 					</div>
 					<div className="item-name">
 						{ item.name }
+						{ item.note ? <p className="item-note">{ item.note }</p> : null }
 					</div>
 					<div className="item-expire">
 						{ this.displayExpiration(item.expiration) }
