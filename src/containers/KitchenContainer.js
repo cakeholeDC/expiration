@@ -128,7 +128,8 @@ class KitchenContainer extends React.Component {
 			this.state.kitchen ?
 				<React.Fragment>
 					<div id="kitchen-details">
-						<h1 className="kitchen-name">{this.state.kitchen.name} - {this.state.kitchen.stocked_items.length} Items</h1>
+						<h1 className="kitchen-name">{this.state.kitchen.name}</h1>
+						<h2 className="kitchen-totals">{this.state.kitchen.stocked_items.length} Total Items</h2>
 						<h3 className="kitchen-address">{this.state.kitchen.location}</h3>
 					</div>
 					<div>
